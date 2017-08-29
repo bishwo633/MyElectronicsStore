@@ -1,0 +1,79 @@
+﻿@model IEnumerable<MyElectronicsStore.Models.Product>
+
+@using (Html.BeginForm("Search"))
+{
+    <table class="table">
+        <tr>
+            <td width="250px">
+                <input type="radio" name="searchtype" id="simplesearch" />
+                <label for="simplesearch">Simple Search</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="radio" name="searchtype" id="advancedsearch" />
+                <label for="advancedsearch">Advanced Search</label>
+            </td>
+        </tr>
+        <tr class="simple advanced">
+            <td><label for="title">Title</label></td>
+            <td><input id="title" type="text" name="title" /></td>
+        </tr>
+        <tr class="advanced">
+            <td><label for="Categories"> Category </label> </td>
+            <td>@Html.DropDownList("CategoryId", "Please select")</td>
+        </tr>
+        <tr class="advanced">
+            <td><label for="PriceFrom">Price</label></td>
+            <td>
+                <input type="text" name="PriceFrom" id="PriceFrom" />
+                <label for="PriceTo">to</label>
+                <input type="text" name="PriceTo" id="PriceTo" />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Search" class="btn btnprimary" /></td>
+        </tr>
+    </table>
+    if (Model != null && Model.Any())
+    {
+        <table class="table table-striped">
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Color</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                        {
+                        <img src="@item.ImageUrl" height="50" width="50" alt="@item.Title" />
+                        }
+                    </td>
+                    <td>@item.Title</td>
+                    <td>@item.Brand.Name</td>
+                    <td>@item.Category.Name</td>
+                    <td>@item.ProductColor.Name</td>
+                    <td>@item.Price</td>
+                    <td>
+                        @Html.ActionLink("Add to cart", "Cart", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <label>No record(s) found</label>
+    }
+}
+@section scripts{
+    <script src="~/Scripts/easysearch.js"></script>
+}

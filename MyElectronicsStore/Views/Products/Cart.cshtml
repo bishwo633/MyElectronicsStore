@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MyElectronicsStore.Models.Cart>
+@{
+    ViewBag.Title = "Cart";
+}
+<h3>Cart</h3>
+<h3>@ViewBag.Message</h3>
+<hr/>
+<h3>Cart Details</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Sub-total</th>
+        </tr>
+    </thead>
+    @{
+        decimal total = 0;
+        if (Model != null && Model.Any())
+        {
+            <tbody>
+                @foreach (var cart in Model)
+                {
+                    total += (cart.Quantity * cart.Price);
+                    <tr>
+                        <td>@cart.Name</td>
+                        <td>@cart.Quantity</td>
+                        <td>@cart.Price</td>
+                        <td>@(cart.Quantity * cart.Price)</td>
+                    </tr>
+                }
+            </tbody>
+        } <tfoot>
+            <tr>
+                <th colspan="3">Total</th>
+                <th>@total</th>
+            </tr>
+            </tfoot>
+        }
+</table>
+@using (Html.BeginForm())
+{
+    <input type="submit" value="Checkout" class="btn btn-primary" />
+}
